@@ -5,11 +5,11 @@ This project demonstrates how to use React hooks (useState), controlled componen
 
 ## Features
 
-- Add new todos with a unique ID (crypto.randomUUID).
+- Add new todos.
 - Mark todos as completed (toggle with a checkbox).
 - Remove todos from the list.
 - Visual feedback with line-through styling for completed tasks.
-- Immutable state management using array methods (map, filter, spread).
+- Immutable state management.
 
 Tech Stack
 
