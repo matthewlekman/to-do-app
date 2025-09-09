@@ -1,4 +1,4 @@
-import { use, useState } from 'react';
+import { useState } from 'react';
 
 interface TodoItem {
     id: string,
@@ -28,6 +28,16 @@ const TodoApp = () => {
             setNewTodo(''); // Resets input field for next entry
         }
     };
+    // Function to edit an item
+    const editTodo = (id:string, newText:string) => {
+        const updatedTodos = todos.map((todo) => {
+            if (todo.id === id) {
+                return {...todo, text: newText};
+            }
+            return todo;
+        })
+        setTodos(updatedTodos);
+    }
     
     // Function to remove an item
     const removeTodo = (id:string) => {
@@ -67,8 +77,14 @@ const TodoApp = () => {
                  onChange={() => toggleComplete(todo.id)} /* When checkbox is clicked, toggleComplete function runs 
                                                             with the item's ID as argument */
                />
-               <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}> {/* If item is completed, 
-                                                                                            text is shown with a line through it */}
+               {/* If item is completed, text is shown with a line through it */}
+               <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+               onClick={() => {
+                const next = prompt("Edit todo:", todo.text);
+                if (next !== null) {
+                    editTodo(todo.id, next);
+                }
+                }}>
                  {todo.text} {/* Displays the text of the to-do item */}
                </span>
                <button onClick={() => removeTodo(todo.id)}>Remove</button> {/* When user clicks button, removeTodo function runs
