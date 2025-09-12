@@ -13,9 +13,13 @@ const TodoApp = () => {
     // Holds current value of new to-do input field
     const [newTodo, setNewTodo] = useState<string>("");
 
+
+    // Function to validate new to-do input
+    const validNewTodo = () => newTodo.trim().length > 0; 
+
     // Function to add a new to-do item
-    const addTodo = () => {
-        if (newTodo !== ' ') { // Checks if input is not empty
+    const addTodo = () => { 
+        if (validNewTodo()) {
             const newId = crypto.randomUUID(); // Generates a Universally Unique Identifier (UUID)
             /* Creates new to-do item object, initialised with the generated UUID, 
             input text, and a default completed status of false */             
@@ -24,7 +28,7 @@ const TodoApp = () => {
                 text: newTodo,
                 completed: false
             };
-            setTodos([...todos, newTodoItem]); // Appends new to-do item to existing list
+            setTodos(prev => [...prev, newTodoItem]); // Append the new item to the current todos list safely
             setNewTodo(''); // Resets input field for next entry
         }
     };
@@ -66,8 +70,9 @@ const TodoApp = () => {
            type="text"
            value={newTodo}
            onChange={(e) => setNewTodo(e.target.value)}
+           onKeyDown={e => { if (e.key === 'Enter' && validNewTodo()) addTodo(); }} // 
          />
-         <button onClick={addTodo}>Add Todo</button> {/* When user clicks button, addTodo function runs */}
+         <button onClick={addTodo} disabled={!validNewTodo()}>Add Todo</button> {/* When user clicks button, addTodo function runs */}
          <ul> {/* Unordered list to display to-do items */}
            {todos.map((todo) => ( // Loops through each to-do item in the todos array
              <li key={todo.id}> {/* Each list item is assigned a unique key using the item's ID */}
