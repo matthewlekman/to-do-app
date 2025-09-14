@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import '../styles/ToDo.css';
 
 interface TodoItem {
     id: string,
@@ -63,44 +64,55 @@ const TodoApp = () => {
     };
 
     return (
-       <div>
-         <h1>Todo App</h1> {/* Title of the app */}
-         {/* Every time user types in input field, onChange runs and newToDo is assigned a value */}
-         <input
-           type="text"
-           value={newTodo}
-           onChange={(e) => setNewTodo(e.target.value)}
-           onKeyDown={e => { if (e.key === 'Enter' && validNewTodo()) addTodo(); }} // 
-         />
-         <button onClick={addTodo} disabled={!validNewTodo()}>Add Todo</button> {/* When user clicks button, addTodo function runs */}
-         <ul> {/* Unordered list to display to-do items */}
+    <div className="board">
+       <div className="column">
+         <h1 className="title">To-Do</h1> {/* Title of the app */}
+
+         {/* Input row groups the input and button nicely */}
+         <div className="input-row">
+           {/* Every time user types in input field, onChange runs and newToDo is assigned a value */}
+           <input
+             className="input"
+             type="text"
+             placeholder="What needs to be done today?"
+             value={newTodo}
+             onChange={(e) => setNewTodo(e.target.value)}
+             onKeyDown={e => { if (e.key === 'Enter' && validNewTodo()) addTodo(); }} // Allows user to press Enter to add a new to-do
+           />
+           <button className="btn" onClick={addTodo} disabled={!validNewTodo()}>Add To-do</button> {/* When user clicks button, addTodo function runs */}
+         </div>
+
+         <ul className="list"> {/* Unordered list to display to-do items */}
            {todos.map((todo) => ( // Loops through each to-do item in the todos array
-             <li key={todo.id}> {/* Each list item is assigned a unique key using the item's ID */}
+             <li 
+               key={todo.id} 
+               className={`item ${todo.completed ? 'completed' : ''}`} // Add base class and completed class if true
+             > {/* Each list item is assigned a unique key using the item's ID */}
                <input
                  type="checkbox"
-                checked={todo.completed} // Checkbox reflects the completed status of the to-do item 
+                 checked={todo.completed} // Checkbox reflects the completed status of the to-do item 
                  onChange={() => toggleComplete(todo.id)} /* When checkbox is clicked, toggleComplete function runs 
                                                             with the item's ID as argument */
                />
                {/* If item is completed, text is shown with a line through it */}
-               <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-               onClick={() => {
-                const next = prompt("Edit todo:", todo.text);
-                if (next !== null) {
-                    editTodo(todo.id, next);
-                }
-                }}>
+               <span 
+                 className="text"
+                 onClick={() => {
+                   const next = prompt("Edit to-do:", todo.text);
+                   if (next !== null) {
+                     editTodo(todo.id, next);
+                   }
+                 }}
+               >
                  {todo.text} {/* Displays the text of the to-do item */}
                </span>
-               <button onClick={() => removeTodo(todo.id)}>Remove</button> {/* When user clicks button, removeTodo function runs
+               <button className="btn btn-danger" onClick={() => removeTodo(todo.id)}>Remove</button> {/* When user clicks button, removeTodo function runs
                                                                           with the item's ID as argument */}
              </li>
            ))}
          </ul>
        </div>
-    )
-
-
-}
+    </div>
+    )}
 
 export default TodoApp;
