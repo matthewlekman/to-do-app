@@ -61,6 +61,12 @@ body {
   box-shadow: 0 0 0 4px var(--ring);
 }
 
+.counter{
+  font-size: .85rem;
+  color: var(--muted);
+  align-self: center;
+}
+
 .btn{
   padding: .65rem .9rem;
   border-radius: 10px;

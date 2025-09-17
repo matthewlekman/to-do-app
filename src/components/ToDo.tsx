@@ -67,7 +67,7 @@ const TodoApp = () => {
     <div className="board">
        <div className="column">
          <h1 className="title">To-Do</h1> {/* Title of the app */}
-
+         <div className="counter">Tasks: {todos.length}</div>
          {/* Input row groups the input and button nicely */}
          <div className="input-row">
            {/* Every time user types in input field, onChange runs and newToDo is assigned a value */}
