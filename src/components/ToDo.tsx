@@ -53,6 +53,7 @@ const TodoApp = () => {
         const updatedTodos = todos.filter((todo) => todo.id !== id); // Filters out the item with the matching ID
         setTodos(updatedTodos); // Updates the state with the new list
     };
+
     /* 
     Function to toggle the completed status of an item.
     If user clicks on an item (searches for id), it switches between completed and not completed.
@@ -83,8 +84,15 @@ const TodoApp = () => {
     return (
     <div className="board">
        <div className="column">
-         <h1 className="title">To-Do</h1> {/* Title of the app */}
-         <div className="counter">Tasks: {todos.length}</div>
+         <div className="header">
+           <div>
+             <h1 className="title">To-Do</h1> {/* Title of the app */}
+             <div className="counter">Tasks: {todos.length}</div>
+           </div>
+           {todos.length > 0 && (
+             <button className="btn btn-clear" onClick={() => {setTodos([])}}>Clear all</button>
+           )}
+         </div>
          {/* Input row groups the input and button nicely */}
          <div className="input-row">
            {/* Every time user types in input field, onChange runs and newToDo is assigned a value */}
