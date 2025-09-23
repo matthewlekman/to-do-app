@@ -61,25 +61,20 @@ body {
   box-shadow: 0 0 0 4px var(--ring);
 }
 
-.header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
 .counter{
   font-size: .85rem;
   color: var(--muted);
   align-self: center;
 }
 
-.btn-clear{
-  background: #ffd7e1;
-  border-color: #ffc2d0;
-  color: #6a1430;
+.clear{
+  margin-left: auto;
+  font-size: .85rem;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  transition: color .15s ease;
 }
-.btn-clear:hover{ background: #ffc9d7; }
 
 .btn{
   padding: .65rem .9rem;
