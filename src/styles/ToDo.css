@@ -67,6 +67,15 @@ body {
   align-self: center;
 }
 
+.clear{
+  margin-left: auto;
+  font-size: .85rem;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+  transition: color .15s ease;
+}
+
 .btn{
   padding: .65rem .9rem;
   border-radius: 10px;
