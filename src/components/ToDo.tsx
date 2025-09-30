@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
 import '../styles/ToDo.css';
-
-interface TodoItem {
-    id: string,
-    text: string,
-    completed: boolean
-}
+import TodoItem from './TodoItem';
 
 const TodoApp = () => {
 
@@ -28,11 +23,6 @@ const TodoApp = () => {
     }, [todos]);
     // Holds current value of new to-do input field
     const [newTodo, setNewTodo] = useState<string>("");
-
-    // States for inline editing
-    const [editId, setEditId] = useState<string | null>(null);
-    const [draftText, setDraftText] = useState<string>("");
-
 
     // Function to validate new to-do input
     const validNewTodo = () => newTodo.trim().length > 0; 
@@ -83,19 +73,6 @@ const TodoApp = () => {
         setTodos(updatedTodos); // Updates the state with the modified list
     };
 
-    // On key down handler for editing
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter' && draftText.trim().length > 0 && editId !== null) { // If Enter is pressed and draftText is not empty
-        editTodo(editId, draftText.trim()); // Save the changes
-        setEditId(null); // Exit edit mode
-        setDraftText(""); // Clear draft text
-      }
-      if (e.key === 'Escape') { // If Escape is pressed
-        setEditId(null); // Exit edit mode without saving
-        setDraftText(""); // Clear draft text
-      }
-    }
-
     return (
     <div className="board">
        <div className="column">
@@ -123,47 +100,15 @@ const TodoApp = () => {
          </div>
 
          <ul className="list"> {/* Unordered list to display to-do items */}
-           {todos.map((todo) => ( // Loops through each to-do item in the todos array
-             <li 
-               key={todo.id} 
-               className={`item ${todo.completed ? 'completed' : ''}`} // Add base class and completed class if true
-             > {/* Each list item is assigned a unique key using the item's ID */}
-               <input
-                 type="checkbox"
-                 checked={todo.completed} // Checkbox reflects the completed status of the to-do item 
-                 onChange={() => toggleComplete(todo.id)} /* When checkbox is clicked, toggleComplete function runs 
-                                                            with the item's ID as argument */
-               />
-               {/* If item is completed, text is shown with a line through it */}
-              {editId === todo.id ? ( // If the current item is being edited
-                <input 
-                className="input"
-                value={draftText} 
-                autoFocus
-                onKeyDown={(e) => handleKeyDown(e)}
-                onChange={(e) => setDraftText(e.target.value)}
-                onBlur={() => { // When input loses focus, save changes if valid
-                  if (draftText.trim().length > 0 && editId) { // Ensure editId is not null
-                    editTodo(editId, draftText.trim()); // Save the changes
-                  }
-                  setEditId(null); 
-                  setDraftText(""); 
-                }}></input>
-              ) : (
-                <span
-                  className="text"
-                  onClick={() => { // When user clicks on the text, enable edit mode 
-                    setEditId(todo.id);
-                    setDraftText(todo.text);
-                  }}
-                >
-                  {todo.text}
-                </span>
-              )}
-               <button className="btn btn-danger" onClick={() => removeTodo(todo.id)}>Remove</button> {/* When user clicks button, removeTodo function runs
-                                                                          with the item's ID as argument */}
-             </li>
-           ))}
+          {todos.map((todo) => (
+            <TodoItem 
+              key={todo.id} 
+              todo={todo} 
+              onToggle={toggleComplete} 
+              onEdit={editTodo} 
+              onRemove={removeTodo} 
+            />
+          ))}
          </ul>
        </div>
     </div>
