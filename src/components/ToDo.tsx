@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/ToDo.css';
 
 interface TodoItem {
@@ -10,7 +10,22 @@ interface TodoItem {
 const TodoApp = () => {
 
     // Holds list of to-do items
-    const [todos, setTodos] = useState<TodoItem[]>([]); 
+    const [todos, setTodos] = useState<TodoItem[]>(() => { // Lazy initialization to load from local storage
+      const saved = localStorage.getItem('todos');
+      if (saved == null) {
+        return [];
+      } else {
+        try {
+          return JSON.parse(saved); // Parses the JSON string back into an array of to-do items
+        } catch (e) {
+          console.error("Failed to parse todos from localStorage:", e);
+          return [];
+        }
+      }
+    }); 
+    useEffect(() => {
+      localStorage.setItem('todos', JSON.stringify(todos)); // Saves todos to local storage whenever they change
+    }, [todos]);
     // Holds current value of new to-do input field
     const [newTodo, setNewTodo] = useState<string>("");
 
